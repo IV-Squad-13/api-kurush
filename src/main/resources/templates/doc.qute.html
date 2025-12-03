@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <title>Especificação Técnica - {titulo}</title>
+
+    <style>
+        @page {
+            size: A4;
+            margin: 3cm 2cm;
+
+            @top-right {
+                content: element(header);
+            }
+
+            @bottom-center {
+                content: element(footer);
+            }
+        }
+
+        body {
+            font-family: Calibri, sans-serif;
+            font-size: 11pt;
+            line-height: 1.15;
+            color: #000000;
+        }
+
+        #header {
+            position: running(header);
+            text-align: right;
+        }
+
+        #header img {
+            width: 96px;
+            height: 88px;
+            margin-top: 0.15cm;
+            margin-bottom: 6cm;
+        }
+
+        #footer {
+            position: running(footer);
+            width: 100%;
+            text-align: center;
+            padding-top: 10pt;
+        }
+
+        #footer img {
+            width: 180px;
+            height: 64px;
+            margin-bottom: 0.25cm;
+        }
+
+        h1 {
+            font-size: 14pt;
+            font-weight: bold;
+            text-align: center;
+            line-height: 1.08;
+            page-break-after: avoid;
+        }
+
+        h2 {
+            font-size: 12pt;
+            font-weight: bold;
+            margin-top: 14pt;
+            margin-bottom: 8pt;
+            line-height: 1.0;
+            page-break-after: avoid;
+        }
+
+        h3 {
+            font-size: 12pt;
+            font-weight: bold;
+            margin-top: 10pt;
+            margin-bottom: 6pt;
+            margin-left: 32pt;
+            line-height: 1.0;
+            page-break-after: avoid;
+        }
+
+        .info {
+            font-size: 12pt;
+            margin-bottom: 8pt;
+            text-align: justify;
+            line-height: 1.08;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 12pt 0 12pt 21pt;
+            font-size: 12pt;
+            page-break-inside: auto;
+        }
+
+        thead {
+            display: table-header-group;
+        }
+
+        tr {
+            page-break-inside: avoid;
+            page-break-after: auto;
+        }
+
+        table th,
+        table td {
+            border: 1pt solid #dbdbdb;
+            padding: 5.4pt;
+            text-align: left;
+            vertical-align: top;
+            line-height: 1.0;
+        }
+
+        table th {
+            font-weight: bold;
+            background-color: #f5f5f5;
+            border-bottom: 1.5pt solid #c9c9c9;
+        }
+
+        .obs-title {
+            font-weight: 400;
+            font-family: Arial, sans-serif;
+            font-size: 11pt;
+            margin-top: 18pt;
+            margin-bottom: 8pt;
+            margin-left: 180pt;
+            text-indent: -180pt;
+        }
+
+        ul.observacoes {
+            font-family: Arial, sans-serif;
+            font-size: 11pt;
+            margin-left: 36pt;
+            padding-left: 0;
+            list-style-type: disc;
+        }
+
+        ul.observacoes li {
+            margin-bottom: 4pt;
+            text-align: justify;
+            line-height: 1.15;
+        }
+
+        ul.observacoes li::marker {
+            content: "● ";
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header">
+        <img src="data:image/jpeg;base64,{headerBase64}" alt="Header Logo" />
+    </div>
+
+    <div id="footer">
+        <img src="data:image/jpeg;base64,{footerBase64}" alt="Footer logo" />
+    </div>
+
+    <h1>ESPECIFICAÇÃO TÉCNICA</h1>
+
+    <p class="info"><strong>Empreendimento:</strong> {titulo}</p>
+    <p class="info"><strong>Localização:</strong> {localizacao}</p>
+    <p class="info"><strong>Descrição do empreendimento:</strong> {descricao}</p>
+
+    {#for local in locais}
+        <h2>{local_count}. {local.localEnum.label}</h2>
+
+        {#for ambiente in local.ambientes}
+            <h3>{local_count}.{ambiente_count} {ambiente.name}</h3>
+
+            <table>
+                <colgroup>
+                    <col style="width: 25%;" />
+                    <col style="width: 75%;" />
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Descrição</th>
+                </tr>
+                </thead>
+                <tbody>
+                {#for item in ambiente.items}
+                    <tr>
+                        <td>{item.type ?: "---"}</td>
+                        <td>{item.desc}</td>
+                    </tr>
+                {/for}
+                </tbody>
+            </table>
+        {/for}
+    {/for}
+
+    <h2>{locais.size + 1}. Descrição das Marcas</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Material</th>
+                <th>Marcas</th>
+            </tr>
+        </thead>
+        <tbody>
+            {#for material in materiais}
+                <tr>
+                    <td>{material.name}</td>
+                    <td>
+                        {#for marca in material.marcas}
+                            {marca}{#if marca_hasNext}, {/if}
+                        {/for}
+                    </td>
+                </tr>
+            {/for}
+        </tbody>
+    </table>
+
+    <p class="obs-title">Observações Gerais:</p>
+
+    <ul class="observacoes">
+        {#for obs in observacoes}
+            <li>{obs}</li>
+        {/for}
+    </ul>
+</body>
+</html>
