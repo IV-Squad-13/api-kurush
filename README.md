@@ -11,7 +11,7 @@ Basta informar o **ID do documento** para receber o PDF gerado.
 
 ---
 
-## 🐳 Docker
+## Docker
 
 - **Repositório da Imagem**: https://hub.docker.com/repository/docker/yuri000/kurush_api/general
 
