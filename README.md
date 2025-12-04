@@ -53,7 +53,7 @@ Inicie o modo de desenvolvimento com hot-reload:
 A Dev UI estará disponível em:
 
 ```
-http://localhost:8080/q/dev/
+http://localhost:13500/q/dev/
 ```
 
 ---
