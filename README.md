@@ -1,77 +1,123 @@
-# api-kurush
+# Kurush (Geração de PDF)
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+API responsável pela geração de documentos PDF a partir dos dados do Monolito.  
+Disponibiliza o endpoint:
 
-If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
+```
+GET /api/doc/pdf/{id}
+```
 
-## Running the application in dev mode
+Basta informar o **ID do documento** para receber o PDF gerado.
 
-You can run your application in dev mode that enables live coding using:
+---
 
-```shell script
+## 🐳 Docker
+
+- **Repositório da Imagem**: https://hub.docker.com/repository/docker/yuri000/kurush_api/general
+
+### Executando via Docker
+
+```bash
+docker run -d \
+  --name kurush_api \
+  -p 13500:13500 \
+  -e QUARKUS_HTTP_PORT=13500 \
+  -e QUARKUS_MONGODB_CONNECTION_STRING="mongodb://admin:admin@localhost:27017/monolito?authSource=admin" \
+  -e QUARKUS_HTTP_CORS_ORIGINS="*" \
+  -e QUARKUS_HTTP_CORS_METHODS="GET,POST,PUT,DELETE,OPTIONS" \
+  -e QUARKUS_HTTP_CORS_HEADERS="*" \
+  -e QUARKUS_HTTP_CORS_EXPOSED_HEADERS="Content-Disposition" \
+  yuri000/kurush_api:latest
+```
+
+---
+
+## Pré-requisitos para ambiente local
+
+- **Java 21+**
+- **Maven 3.8+**
+- **Docker (opcional para builds nativos)**
+- **MongoDB em execução**  
+  (usado para buscar os dados antes da geração do PDF)
+
+---
+
+## Ambiente de Desenvolvimento
+
+Inicie o modo de desenvolvimento com hot-reload:
+
+```bash
 ./mvnw quarkus:dev
 ```
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
+A Dev UI estará disponível em:
 
-## Packaging and running the application
+```
+http://localhost:8080/q/dev/
+```
 
-The application can be packaged using:
+---
 
-```shell script
+## Empacotando a aplicação
+
+Gerar o pacote padrão:
+
+```bash
 ./mvnw package
 ```
 
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
+O jar será criado em:
 
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
+```
+target/quarkus-app/quarkus-run.jar
+```
 
-If you want to build an _über-jar_, execute the following command:
+Executar o jar:
 
-```shell script
+```bash
+java -jar target/quarkus-app/quarkus-run.jar
+```
+
+---
+
+## Criando um Über-Jar
+
+```bash
 ./mvnw package -Dquarkus.package.jar.type=uber-jar
 ```
 
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
+Executar:
 
-## Creating a native executable
+```bash
+java -jar target/*-runner.jar
+```
 
-You can create a native executable using:
+---
 
-```shell script
+## Build Nativo (opcional)
+
+Criar binário nativo:
+
+```bash
 ./mvnw package -Dnative
 ```
 
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
+Ou usando container (sem GraalVM local):
 
-```shell script
+```bash
 ./mvnw package -Dnative -Dquarkus.native.container-build=true
 ```
 
-You can then execute your native executable with: `./target/api-kurush-1.0-SNAPSHOT-runner`
+Executar:
 
-If you want to learn more about building native executables, please consult <https://quarkus.io/guides/maven-tooling>.
+```bash
+./target/api-kurush-*-runner
+```
 
-## Related Guides
+---
 
-- REST resources for MongoDB with Panache ([guide](https://quarkus.io/guides/rest-data-panache)): Generate Jakarta REST
-  resources for your MongoDB entities and repositories
-- REST Qute ([guide](https://quarkus.io/guides/qute-reference#rest_integration)): Qute integration for Quarkus REST.
-  This extension is not compatible with the quarkus-resteasy extension, or any of the extensions that depend on it.
-- RESTEasy Classic Mutiny ([guide](https://quarkus.io/guides/resteasy#reactive)): Mutiny support for RESTEasy Classic
-  server
+## Guias Relacionados
 
-## Provided Code
-
-### REST Qute
-
-Create your web page using Quarkus REST and Qute
-
-[Related guide section...](https://quarkus.io/guides/qute#type-safe-templates)
-
-### RESTEasy JAX-RS
-
-Easily start your RESTful Web Services
-
-[Related guide section...](https://quarkus.io/guides/getting-started#the-jax-rs-resources)
+- MongoDB Panache: https://quarkus.io/guides/rest-data-panache  
+- Qute Templates: https://quarkus.io/guides/qute-reference  
+- RESTEasy Reactive: https://quarkus.io/guides/resteasy-reactive
