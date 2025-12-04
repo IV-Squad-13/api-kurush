@@ -21,7 +21,7 @@ public class DocResource {
     }
 
     @GET
-    @Path("/{id:[a-fA-F0-9]{24}}")
+    @Path("/pdf/{id:[a-fA-F0-9]{24}}")
     @Produces("application/pdf")
     public Response getPdf(@PathParam("id") String especId) throws IOException {
         return Response.ok(aggService.generatePdf(especId))
